@@ -22,9 +22,12 @@ def show_raw_data(filtered_df):
         st.dataframe(filtered_df, use_container_width=True)
     
     # Add download button
-    csv = filtered_df.to_csv(index=False).encode('utf-8')
+    if search_term:
+        csv = search_results.to_csv(index=False).encode('utf-8')
+    else:
+        csv = filtered_df.to_csv(index=False).encode('utf-8')
     st.download_button(
-        label="Download filtered data as CSV",
+        label="Download filtered data or search results as CSV",
         data=csv,
         file_name="filtered_supersales_data.csv",
         mime="text/csv",
