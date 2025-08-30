@@ -5,6 +5,7 @@ import pandas as pd
 from utils import load_data, filter_data
 from tabs.dashboard import show_dashboard
 from tabs.raw_data import show_raw_data
+from tabs.forecast import show_forecast
 
 # Load data
 df = load_data()
@@ -55,7 +56,7 @@ if date_range_min > date_range_max:
 filtered_df = filter_data(df, date_range_min, date_range_max, region, category)
 
 # Create tabs
-dashboard_tab, raw_data_tab = st.tabs(["📊 Dashboard", "📋 Raw Data"])
+dashboard_tab, raw_data_tab, forecast_tab = st.tabs(["📊 Dashboard", "📋 Raw Data", "📈 Forecast"])
 
 # Tab 1: Dashboard
 with dashboard_tab:
@@ -64,4 +65,8 @@ with dashboard_tab:
 # Tab 2: Raw Data
 with raw_data_tab:
     show_raw_data(filtered_df)
+    
+# Tab 3: Forecast
+with forecast_tab:
+    show_forecast(filtered_df)
 

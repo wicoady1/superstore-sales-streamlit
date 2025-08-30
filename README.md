@@ -57,6 +57,7 @@ make run PORT=8000
 
 - Interactive dashboard with KPIs and visualizations
 - Raw data view with search functionality
+- Sales forecasting with adjustable forecast horizon (3-60 months)
 - Filters for date range, region, and category
 - Data export capability
 - Responsive design
@@ -68,3 +69,5 @@ make run PORT=8000
 - Top 10 products
 - Top 10 customers
 - Key performance indicators
+- Time series forecasting with trend and seasonality analysis
+- Adjustable forecast horizon with interactive slider
