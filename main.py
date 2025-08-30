@@ -25,17 +25,21 @@ df = load_data()
 st.sidebar.title('SuperSales Data Analysis')
 st.sidebar.header('Filter Data')
 
-years = st.sidebar.multiselect(
-    'Select Year:', 
-    options=df['Order_YearMonth'].dt.year.unique(),
-    default=df['Order_YearMonth'].dt.year.unique()
+# Create a list of unique year-month combinations in format 'YYYY-MM'
+date_options = df['Order_YearMonth'].sort_values().dt.strftime('%Y-%m').unique().tolist()
+
+date_range_min = st.sidebar.selectbox(
+    'Select Minimum Month-Date:',
+    options=date_options,
+    index=0
 )
 
-month = st.sidebar.multiselect(
-    'Select Month:',
-    options=df['Order_YearMonth'].dt.month.unique(),
-    default=df['Order_YearMonth'].dt.month.unique()
+date_range_max = st.sidebar.selectbox(
+    'Select Maximum Month-Date:',
+    options=date_options,
+    index=len(date_options)-1
 )
+
 
 region = st.sidebar.multiselect(
     'Select Region:',
@@ -49,13 +53,20 @@ category = st.sidebar.multiselect(
     default=df['Category'].unique()
 )
 
-## Apply Filters
-filtered_df = df[
-    (df['Order_YearMonth'].dt.year.isin(years)) &
-    (df['Order_YearMonth'].dt.month.isin(month)) &
-    (df['Region'].isin(region)) &
-    (df['Category'].isin(category))
-]
+if date_range_min > date_range_max:
+    st.sidebar.error("Error: Minimum date must be before maximum date.")
+
+    filtered_df = df[
+        (df['Order_YearMonth'].dt.strftime('%Y-%m').between(min(date_options), max(date_options))) &
+        (df['Region'].isin(region)) &
+        (df['Category'].isin(category))
+    ]
+else:
+    filtered_df = df[
+        (df['Order_YearMonth'].dt.strftime('%Y-%m').between(date_range_min, date_range_max)) &
+        (df['Region'].isin(region)) &
+        (df['Category'].isin(category))
+    ]
 
 # =========
 # KPI CARDS
